@@ -2,7 +2,10 @@
 Extending queryset and SolrBackend models for Django Haystack, that lets Django Haystack support Solr's Cursor Pagination 
 
 ## About
-A simple extension for [Haystack](https://github.com/django-haystack/django-haystack). It supports Solr's cursorMark to request subsequent pages of sorted results.
+A light extension for [Haystack](https://github.com/django-haystack/django-haystack)'s Solr Backend. 
+
+### CursorPagination
+It supports Solr's cursorMark to request subsequent pages of sorted results.
 Since current Haystack only provides Basic Pagination which could be ineffcient on fetching large number of results.
 
 states on Apache Solr website:
@@ -13,6 +16,8 @@ states on Apache Solr website:
 for more information about Cursor pagination, please go to [here](https://cwiki.apache.org/confluence/display/solr/Pagination+of+Results/#PaginationofResults-FetchingALargeNumberofSortedResults:Cursors)
 
 This extension still provides cached results as long as you are keeping fetch results in sequence.
+
+### The Extended DisMax Query Parser (eDisMax) (in progressing)
 
 ## Usage
 ToDo
