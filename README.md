@@ -26,11 +26,11 @@ ToDo - Unfinished
     count = request.query_params.get('count', 20)
     count = int(count)
     sqs = sqs.order_by('distance').set_next_cursor(cursor, count))
-  reutrn search query:
-  and Set cached = True to reduce hit chance on Solr Engine
+    # reutrn search query:
+    # and Set cached = True to reduce hit chance on Solr Engine
     sqs = sqs.set_next_cursor(sqs.get_next_cursor(), 10, True)
     sqs[9]  # If Cached = True would directly return the result without lookup from backends
-  get next cursor:
+    # get next cursor:
     next_cursor = sqs.get_next_cursor()
 
 ## Installation
