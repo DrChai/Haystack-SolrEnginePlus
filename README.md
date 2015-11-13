@@ -20,7 +20,24 @@ This extension still provides cached results as long as you are keeping fetch re
 ### The Extended DisMax Query Parser (eDisMax) (in progressing)
 
 ## Usage
-ToDo
+ToDo - Unfinished
+
+    q = request.GET.get('q', '').strip()
+    count = request.query_params.get('count', 20)
+    count = int(count)
+    sqs = sqs.order_by('distance').set_next_cursor(cursor, count))
+  reutrn search query:
+  and Set cached = True to reduce hit chance on Solr Engine
+    sqs = sqs.set_next_cursor(sqs.get_next_cursor(), 10, True)
+    sqs[9]  # If Cached = True would directly return the result without lookup from backends
+  get next cursor:
+    next_cursor = sqs.get_next_cursor()
 
 ## Installation
-ToDo
+ToDo - Unfinished
+
+* Pysolr doesnt support solr’s nextCursorMark.variable (Required)
+  follow https://github.com/yspanchal/pysolr/commit/a4dc27fff5935177a69ff6b8995fb2d37fa5571a
+  to enable cursor pagination
+* then reinstall: python setup.py install
+
