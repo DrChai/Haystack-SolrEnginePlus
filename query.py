@@ -80,9 +80,14 @@ class CursorSearchQuerySet(SearchQuerySet):
                 current_cache_max = self._result_cache.index(None)
             except ValueError:
                 current_cache_max = len(self._result_cache)
-        if self.query._current_cursor is None or not self.is_cursor_cached:  # if its first time called or not at last check point
+        if self.query._current_cursor is None or (not self.is_cursor_cached and self.cursor_updated):
+            # if its first time called or
+            # we cannot append with previous cached data and new updated data not been
+            # queried we call _fill_cache(fill starts last iter)
             self._fill_cache(0, None)  # refill cache result
         elif self.is_cursor_cached and self.cursor_updated:
+            # if we can append with previous cached data and new updated data not been
+            # queried we call _fill_cache(fill starts last iter)
             self._fill_cache(current_cache_max, None)
         return self.query._next_cursor
 
@@ -147,3 +152,16 @@ class CursorSearchQuerySet(SearchQuerySet):
             # Fill more of the cache.
             if not self._fill_cache(current_position, current_position + ITERATOR_LOAD_PER_QUERY):
                 raise StopIteration
+
+    def query_facet(self, func=None, field=None, query=None):
+        """Adds faceting to a query for the provided field with a custom query."""
+        clone = self._clone()
+        clone.query.add_query_facet(func, field, query)
+        return clone
+
+    def _clone(self, klass=None):
+        clone = super(CursorSearchQuerySet, self)._clone(klass=klass)
+        clone.is_using_cursor = self.is_using_cursor
+        clone.is_cursor_cached = self.is_cursor_cached
+        clone.cursor_updated = self.cursor_updated
+        return clone
